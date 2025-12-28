@@ -1,401 +1,491 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Assistente - Transporte Escolar</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    body { 
-      font-family: 'Segoe UI', Tahoma, sans-serif; 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex; 
-      justify-content: center; 
-      align-items: center;
-      min-height: 100vh; 
-      padding: 20px;
-    }
-    
-    .container { 
-      width: 100%; 
-      max-width: 600px; 
-      background: white; 
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      height: 700px;
-    }
-    
-    .header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 25px;
-      text-align: center;
-    }
-    
-    .header h1 {
-      font-size: 24px;
-      margin-bottom: 5px;
-    }
-    
-    .header p {
-      font-size: 14px;
-      opacity: 0.9;
-    }
-    
-    #chat { 
-      flex: 1; 
-      overflow-y: auto; 
-      padding: 20px; 
-      background: #f8f9fa;
-    }
-    
-    .message { 
-      margin-bottom: 15px; 
-      display: flex;
-      animation: fadeIn 0.3s;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .message-content {
-      padding: 12px 16px; 
-      border-radius: 15px; 
-      font-size: 15px; 
-      line-height: 1.6;
-      max-width: 75%;
-      word-wrap: break-word;
-    }
-    
-    .bot-message {
-      justify-content: flex-start;
-    }
-    
-    .bot-message .message-content { 
-      background: white;
-      border: 1px solid #e0e0e0;
-      border-bottom-left-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-    
-    .user-message {
-      justify-content: flex-end;
-    }
-    
-    .user-message .message-content { 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white; 
-      border-bottom-right-radius: 5px;
-    }
-    
-    .quick-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-    }
-    
-    .quick-btn {
-      background: #667eea;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 15px;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    
-    .quick-btn:hover {
-      background: #5568d3;
-      transform: translateY(-2px);
-    }
-    
-    .typing {
-      display: flex;
-      align-items: center;
-      padding: 12px 16px;
-      background: white;
-      border-radius: 15px;
-      border-bottom-left-radius: 5px;
-      max-width: 75px;
-      border: 1px solid #e0e0e0;
-    }
-    
-    .typing span {
-      width: 8px;
-      height: 8px;
-      background: #667eea;
-      border-radius: 50%;
-      margin: 0 2px;
-      animation: typing 1.4s infinite;
-    }
-    
-    .typing span:nth-child(2) { animation-delay: 0.2s; }
-    .typing span:nth-child(3) { animation-delay: 0.4s; }
-    
-    @keyframes typing {
-      0%, 60%, 100% { transform: translateY(0); opacity: 0.7; }
-      30% { transform: translateY(-10px); opacity: 1; }
-    }
-    
-    .input-area { 
-      display: flex; 
-      padding: 20px; 
-      background: white;
-      border-top: 1px solid #e0e0e0;
-      gap: 10px;
-    }
-    
-    #userInput { 
-      flex: 1; 
-      padding: 14px 18px; 
-      border: 2px solid #e0e0e0; 
-      border-radius: 25px; 
-      outline: none;
-      font-size: 15px;
-      transition: border-color 0.3s;
-    }
-    
-    #userInput:focus {
-      border-color: #667eea;
-    }
-    
-    #sendBtn { 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white; 
-      border: none; 
-      border-radius: 50%; 
-      width: 50px; 
-      height: 50px;
-      cursor: pointer;
-      font-size: 20px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    #sendBtn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-    }
-    
-    #sendBtn:active {
-      transform: scale(0.95);
-    }
-    
-    #sendBtn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia - Solicitação de Transporte Escolar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .intro {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .intro h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .important-note {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+        
+        .important-note strong {
+            color: #856404;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .search-box {
+            position: sticky;
+            top: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            z-index: 100;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .menu-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .question-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9ff;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+            scroll-margin-top: 100px;
+        }
+        
+        .question-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .question-section p {
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+        
+        .question-section a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .question-section a:hover {
+            text-decoration: underline;
+        }
+        
+        .back-to-top {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+        
+        .back-to-top:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+        
+        .category {
+            margin-bottom: 40px;
+        }
+        
+        .category-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+        
+        footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>🚌 Assistente de Transporte</h1>
-      <p>Tire suas dúvidas sobre saídas pedagógicas</p>
-    </div>
-    
-    <div id="chat">
-      <div class="message bot-message">
-        <div class="message-content">
-          <strong>Olá! 👋</strong><br><br>
-          Estou aqui para ajudar você a preencher o formulário de solicitação de transporte para saídas pedagógicas.<br><br>
-          <strong>Escolha uma opção ou digite sua dúvida:</strong>
-          <div class="quick-buttons">
-            <button class="quick-btn" onclick="askQuestion('Como preencher o nome?')">📝 Nome da escola</button>
-            <button class="quick-btn" onclick="askQuestion('Como preencher o destino?')">📍 Destino</button>
-            <button class="quick-btn" onclick="askQuestion('Como preencher a data?')">📅 Data</button>
-            <button class="quick-btn" onclick="askQuestion('Como preencher o horário?')">🕐 Horários</button>
-            <button class="quick-btn" onclick="askQuestion('Quantos alunos posso levar?')">👥 Alunos</button>
-            <button class="quick-btn" onclick="askQuestion('Qual o prazo?')">⏰ Prazos</button>
-          </div>
+    <div class="container">
+        <header>
+            <h1>📋 Guia de Solicitação de Transporte Escolar</h1>
+            <p>ATA de Transporte de Alunos 2026</p>
+        </header>
+        
+        <div class="content">
+            <div class="intro">
+                <h2>Bem-vindo!</h2>
+                <p>Este guia contém todas as informações necessárias para preencher corretamente sua solicitação de transporte para saídas pedagógicas. Use a busca abaixo ou navegue pelas categorias para encontrar a ajuda que você precisa.</p>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Buscar por palavra-chave... (ex: prazo, endereço, horário)">
+            </div>
+            
+            <div class="important-note">
+                <strong>⚠️ PRAZO IMPORTANTE</strong>
+                <p>Envie a solicitação pelo sistema SEI com antecedência mínima de 15 dias. A Seção de Compras e Serviços somente pode atender pedidos que tenham tramitado regularmente pela supervisão, tenham sido autorizados pela dirigência e tenham obtido aprovação de verba para pagamento.</p>
+            </div>
+            
+            <div id="menu">
+                <h2 style="margin-bottom: 20px; color: #667eea;">Navegue pelas Categorias</h2>
+                <div class="menu">
+                    <a href="#dados-escola" class="menu-item">🏫 Dados da Escola</a>
+                    <a href="#dados-responsavel" class="menu-item">👤 Dados do Responsável</a>
+                    <a href="#dados-evento" class="menu-item">📅 Dados do Evento</a>
+                    <a href="#destinos" class="menu-item">🗺️ Destinos e Trajeto</a>
+                    <a href="#horarios" class="menu-item">⏰ Horários</a>
+                    <a href="#quilometragem" class="menu-item">📏 Quilometragem</a>
+                    <a href="#gerais" class="menu-item">ℹ️ Informações Gerais</a>
+                    <a href="#documento" class="menu-item">📄 Documento Final</a>
+                </div>
+            </div>
+            
+            <div class="category" id="dados-escola">
+                <h2 class="category-title">🏫 Dados da Escola</h2>
+                
+                <div class="question-section">
+                    <h3>Nome da Escola</h3>
+                    <p>Informe o nome completo da unidade escolar conforme cadastro oficial. Use exatamente o nome que consta nos documentos da escola.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Endereço da Escola</h3>
+                    <p>Copie o endereço completo da escola, incluindo rua, número, bairro, cidade/UF e CEP. Certifique-se de que todos os campos estejam corretos.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Telefone da Escola</h3>
+                    <p>Informe um telefone fixo ou celular da escola para contato. Este número será usado pela empresa de transporte caso necessário.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>E-mail da Escola</h3>
+                    <p>Use o e-mail institucional da escola (ex.: @educacao.sp.gov.br). É importante usar o e-mail oficial para garantir que você receba o documento gerado.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+            </div>
+            
+            <div class="category" id="dados-responsavel">
+                <h2 class="category-title">👤 Dados do Responsável</h2>
+                
+                <div class="question-section">
+                    <h3>Responsável pela Solicitação</h3>
+                    <p>Informe o nome completo do responsável pelo pedido. Esta pessoa será o contato principal para a solicitação.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Cargo do(a) Responsável pela Solicitação</h3>
+                    <p>Informe o cargo do responsável (ex.: Diretor, Coordenador, Professor). Este campo ajuda a identificar a função da pessoa responsável.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Telefone de Contato do Responsável no Dia do Evento</h3>
+                    <p>Informe um telefone ativo para contato durante a viagem. É fundamental que este número esteja disponível no dia do evento para qualquer emergência ou comunicação necessária.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+            </div>
+            
+            <div class="category" id="dados-evento">
+                <h2 class="category-title">📅 Dados do Evento</h2>
+                
+                <div class="question-section">
+                    <h3>Nome do Evento Principal</h3>
+                    <p>Informe o nome oficial do evento pedagógico (ex.: Visita ao Museu, Excursão ao Parque Ecológico). Este nome deve descrever claramente o objetivo da saída.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Data do Evento</h3>
+                    <p>Use o formato <strong>dia/mês/ano</strong> conforme o formulário. Exemplo: 30/12/2025. Verifique se a data está correta antes de enviar.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Quantidade de Passageiros</h3>
+                    <p>Informe o total de pessoas no ônibus, incluindo alunos e toda a equipe (professores, monitores, coordenadores). É importante que este número seja exato para garantir a capacidade adequada do veículo.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+            </div>
+            
+            <div class="category" id="destinos">
+                <h2 class="category-title">🗺️ Destinos e Trajeto</h2>
+                
+                <div class="question-section">
+                    <h3>Endereço Completo – O que Incluir</h3>
+                    <p>Inclua <strong>logradouro, número, bairro, cidade/UF e CEP</strong>. Utilize o texto de endereço que o Google Maps exibe.</p>
+                    <p><strong>Exemplo:</strong> Av. Paulista, 1578 – Bela Vista – São Paulo/SP – CEP 01310-200</p>
+                    <p>Acesse o <a href="https://maps.google.com" target="_blank">Google Maps</a> para copiar o endereço corretamente.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Endereço do Destino 1</h3>
+                    <p>Este campo deve ser preenchido com o endereço completo do primeiro destino do ônibus. Copie o endereço completo do Google Maps em um único campo.</p>
+                    <p><strong>Exemplo:</strong> Av. Paulista, 1578 – Bela Vista – São Paulo/SP – CEP 01310-200</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Quantos Destinos a Saída Pedagógica Terá?</h3>
+                    <p>Selecione conforme o planejamento: 1 destino, 2 ou 3 destinos.</p>
+                    <p><strong>Importante:</strong> Caso você selecione que a viagem possui apenas um destino, as próximas perguntas serão sobre o retorno para a escola. Caso a saída tenha mais de 3 destinos, o documento gerado precisará ser editado para acrescentar mais informações, pois o formulário somente tem espaço para saída de 1 a 3 destinos.</p>
+                    <p><strong>ATENÇÃO:</strong> O campo onde a quilometragem é informada precisa ser calculado sem erros (um campo com o total rodado na ida e outro com o total da volta).</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Endereço dos Destinos 2 e 3</h3>
+                    <p>Da mesma forma que o Destino 1, copie o endereço completo do Google Maps em um único campo de texto para cada destino adicional.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Como Anexar o Mapa do Trajeto</h3>
+                    <p>Após o documento ser gerado, abra o Google Docs e <strong>cole a imagem do mapa</strong> (captura de tela do Google Maps) no campo indicado.</p>
+                    <p>Para aprender a inserir imagens no Google Docs, acesse: <a href="https://support.google.com/docs/answer/170300" target="_blank">Suporte Google Docs</a></p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+            </div>
+            
+            <div class="category" id="horarios">
+                <h2 class="category-title">⏰ Horários</h2>
+                
+                <div class="question-section">
+                    <h3>Formato do Horário</h3>
+                    <p>Utilize o padrão de 24 horas (ex.: 07:30, 13:45). Não use formato AM/PM. Seja preciso nos horários para garantir o bom planejamento da viagem.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Horário da Saída da Escola</h3>
+                    <p>Informe o horário exato que o ônibus partirá da escola (ex.: 07:30). Este horário deve considerar o tempo necessário para embarque dos alunos.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Horário da Chegada ao Destino</h3>
+                    <p>Informe o horário previsto de chegada a cada destino. Considere o tempo de viagem e possíveis imprevistos no trânsito.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Horário de Saída dos Destinos</h3>
+                    <p>Informe o horário previsto de saída de cada destino rumo ao próximo local ou de volta à escola. Planeje o tempo de permanência em cada local.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Horário de Saída do Último Destino (Início do Retorno)</h3>
+                    <p>Informe o horário previsto para início do retorno à escola. Este é o momento em que o ônibus deixa o último destino.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Horário Previsto de Chegada na Unidade Escolar</h3>
+                    <p>Informe o horário previsto de chegada de volta à escola. Este horário é importante para que os pais/responsáveis saibam quando buscar os alunos.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+            </div>
+            
+            <div class="category" id="quilometragem">
+                <h2 class="category-title">📏 Quilometragem</h2>
+                
+                <div class="question-section">
+                    <h3>Quilômetros Percorridos na Ida</h3>
+                    <p>Informe a distância total em quilômetros percorrida na ida. Some a distância da escola até o primeiro destino, e entre todos os destinos subsequentes. Use o Google Maps para calcular as distâncias com precisão.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Quilômetros Percorridos na Volta</h3>
+                    <p>Informe a distância total em quilômetros percorrida na volta. Geralmente, é a distância do último destino até a escola. Verifique se há diferença no trajeto de retorno.</p>
+                    <p><strong>IMPORTANTE:</strong> Estes campos precisam ser calculados sem erros. Um campo deve conter o total rodado na ida e outro o total da volta.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+            </div>
+            
+            <div class="category" id="gerais">
+                <h2 class="category-title">ℹ️ Informações Gerais</h2>
+                
+                <div class="question-section">
+                    <h3>Posso Pedir Mais de Um Ônibus?</h3>
+                    <p>A autorização das viagens parte da supervisão. A Seção de Compras e Serviços cumpre o que tiver sido autorizado pela supervisão e pela dirigência. Se você precisa de mais de um ônibus, isso deve ser solicitado e aprovado previamente.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+                
+                <div class="question-section">
+                    <h3>Prazo Mínimo para Solicitar</h3>
+                    <p>Envie a solicitação pelo sistema SEI com antecedência mínima de <strong>15 dias</strong>.</p>
+                    <p>A Seção de Compras e Serviços somente pode atender pedidos que tenham:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Tramitado regularmente pela supervisão</li>
+                        <li>Sido autorizados pela dirigência</li>
+                        <li>Obtido aprovação de verba para pagamento da empresa responsável pelo transporte</li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>Após o envio:</strong> Acompanhe a tramitação pelo sistema SEI para saber em que seção a solicitação está tramitando.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+            </div>
+            
+            <div class="category" id="documento">
+                <h2 class="category-title">📄 Documento Final</h2>
+                
+                <div class="question-section">
+                    <h3>Documento Gerado - Como Obter e Completar</h3>
+                    <p><strong>Requisito importante:</strong> Para fazer o preenchimento do pedido, é preciso estar logado no e-mail institucional do Google.</p>
+                    
+                    <p style="margin-top: 15px;"><strong>Após preencher o formulário:</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>O documento gerado será enviado para os e-mails fornecidos (da escola e do solicitante)</li>
+                        <li>O documento ainda precisará ser editado (o mapa do trajeto precisará ser acrescentado)</li>
+                        <li>Leia atentamente seu documento para verificar se houve alguma falha</li>
+                        <li>Se houver erros, basta editar os campos para que fique tudo conforme o planejamento</li>
+                    </ul>
+                    
+                    <p style="margin-top: 15px;"><strong>Lembre-se:</strong> Todas as perguntas precisam ser respondidas, pois os dados são passados para a empresa que faz a prestação do serviço de transporte.</p>
+                    <a href="#menu" class="back-to-top">↑ Voltar ao menu</a>
+                </div>
+            </div>
         </div>
-      </div>
+        
+        <footer>
+            <p>Seção de Compras e Serviços - Transporte Escolar 2026</p>
+            <p style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;">Dúvidas? Entre em contato com a supervisão.</p>
+        </footer>
     </div>
     
-    <div class="input-area">
-      <input 
-        type="text" 
-        id="userInput" 
-        placeholder="Digite sua dúvida aqui..." 
-        autocomplete="off"
-      >
-      <button id="sendBtn">➤</button>
-    </div>
-  </div>
-
-  <script>
-    const chat = document.getElementById('chat');
-    const userInput = document.getElementById('userInput');
-    const sendBtn = document.getElementById('sendBtn');
-
-    // Base de conhecimento com respostas
-    const respostas = {
-      'nome': {
-        keywords: ['nome', 'escola', 'unidade', 'instituição'],
-        resposta: `<strong>📝 NOME DA ESCOLA</strong><br><br>
-        Você deve preencher o <strong>nome completo</strong> da unidade escolar.<br><br>
-        <strong>Exemplo correto:</strong><br>
-        • E.E. Antonio Joaquim de Carvalho<br><br>
-        ⚠️ Use o nome oficial que consta no documento da escola.`
-      },
-      'destino': {
-        keywords: ['destino', 'local', 'lugar', 'onde', 'aonde'],
-        resposta: `<strong>📍 DESTINOS MÚLTIPLOS</strong><br><br>
-        O formulário se adapta automaticamente à quantidade de destinos:<br><br>
-        <strong>1. Informe a quantidade de destinos</strong><br>
-        • O formulário perguntará quantos destinos sua saída terá<br>        
-        • Escolha: 1, 2 ou 3 destinos<br><br>
-        <strong>2. O formulário mostrará apenas os campos que estiverem de acordo com as suas escolhas</strong><br>
-        • Se informar 1 destino: verá apenas o campo para informar o endereço de "Destino 1"<br>
-        • Se informar 2 ou 3 destinos: verá os campos para informar os endereços de 2 ou 3  destinos, conforme selecionado<br><br>
-        <strong>⚠️ Escolheu a quantidade errada?</strong><br>
-        Sem problema! Quando os campos desnecessários aparecerem, deixe-os em branco. Isso não invalidará seu formulário.<br><br>
-        💡 <strong>Dica:</strong> Quando você receber, por e+mail, o documento pronto, será possível fazer as edições que você julgar necessárias.`
-      },
-      'data': {
-        keywords: ['data', 'dia', 'quando'],
-        resposta: `<strong>📅 DATA DA SAÍDA</strong><br><br>
-        Use o formato: <strong>DD/MM/AAAA</strong><br><br>
-        <strong>Exemplos corretos:</strong><br>
-        • 15/03/2024<br>
-        • 08/05/2024<br><br>
-        ⚠️ <strong>IMPORTANTE:</strong> Solicite com no mínimo <strong>15 dias de antecedência</strong>!`
-      },
-      'horario': {
-        keywords: ['horário', 'horario', 'hora', 'saída', 'saida', 'retorno', 'volta'],
-        resposta: `<strong>🕐 HORÁRIOS</strong><br><br>
-        Use o formato de <strong>24 horas</strong>:<br><br>
-        <strong>HORÁRIO DE SAÍDA:</strong><br>
-        • 08:00, 09:30, 13:00, etc.<br><br>
-        <strong>HORÁRIO DE RETORNO:</strong><br>
-        • 11:30, 16:00, 17:30, etc.<br><br>
-        💡 Todos os campos relativos a horários são de preenchimento obrigatório, pois a empresa prestadora do serviço de transporte necessita desses dados.},
-      'alunos': {
-        keywords: ['alunos', 'aluno', 'estudantes', 'crianças', 'criancas', 'quantidade', 'numero', 'número'],
-        resposta: `<strong>👥 NÚMERO DE ALUNOS E ACOMPANHANTES</strong><br><br>
-        <strong>ALUNOS:</strong> Informe o número total de pessoas que embarcarão no meio de transporte fornecido (alunos + professores e funcionários).<<br><br>
-        <strong>Regras:
-        • Conte TODOS que irão no transporte<br><br>
-        📝 Exemplo: 30 alunos + 3 acompanhantes = informe 33`
-      },
-      'prazo': {
-        keywords: ['prazo', 'antecedência', 'antecedencia', 'quanto tempo', 'dias'],
-        resposta: `<strong>⏰ PRAZOS</strong><br><br>
-        <strong>MÍNIMO:</strong> 15 dias corridos de antecedência<br><br>
-        💡 Recomenda-se acompanhar a tramitação do pedido pelo processo SEI para saber se o processo já foi aprovado e em que seção ele está tramitando.<br><br>
-        <strong>Exemplo:</strong><br>
-        • Saída em 20/03: Solicitar até 05/03<br><br>
-        ⚠️ Solicitações <strong>fora do prazo podem ser recusadas</strong>!`
-      },
-      
-      'nao_sei': {
-        keywords: ['não sei', 'nao sei', 'dúvida', 'duvida', 'ajuda', 'help', 'socorro'],
-        resposta: `<strong>🤔 Precisa de mais ajuda?</strong><br><br>
-        Você pode:<br><br>
-        1️⃣ Clicar nos botões acima para tópicos específicos<br>
-        2️⃣ Perguntar sobre um campo específico<br>
-        3️⃣ Entrar em contato com a seção onde o pedido esteja tramitando para obter informações<br><br>
-        💬 Tente perguntas como: "Como preencher a data?" ou "Qual o prazo?"`
-      }
-    };
-
-    function encontrarResposta(pergunta) {
-      const perguntaLower = pergunta.toLowerCase();
-      
-      // Procura por palavras-chave
-      for (const [key, data] of Object.entries(respostas)) {
-        if (data.keywords.some(keyword => perguntaLower.includes(keyword))) {
-          return data.resposta;
-        }
-      }
-      
-      // Resposta padrão
-      return `<strong>Desculpe, não entendi sua pergunta.</strong> 😕<br><br>
-      Tente perguntar sobre:<br><br>
-      • Como preencher algum campo específico<br>
-      • Prazos<br>
-      • Horários<br>
-      • Número de alunos<br><br>
-      Ou clique em um dos botões acima! 👆`;
-    }
-
-    function askQuestion(question) {
-      userInput.value = question;
-      sendMessage();
-    }
-
-    function sendMessage() {
-      const message = userInput.value.trim();
-      if (!message) return;
-
-      // Adiciona mensagem do usuário
-      addMessage(message, 'user');
-      userInput.value = '';
-
-      // Mostra indicador de digitação
-      const typingId = showTyping();
-
-      // Simula "pensamento" do bot
-      setTimeout(() => {
-        removeTyping(typingId);
-        const resposta = encontrarResposta(message);
-        addMessage(resposta, 'bot');
-      }, 800);
-    }
-
-    function addMessage(text, sender) {
-      const messageDiv = document.createElement('div');
-      messageDiv.className = `message ${sender}-message`;
-      
-      const contentDiv = document.createElement('div');
-      contentDiv.className = 'message-content';
-      contentDiv.innerHTML = text;
-      
-      messageDiv.appendChild(contentDiv);
-      chat.appendChild(messageDiv);
-      chat.scrollTop = chat.scrollHeight;
-    }
-
-    function showTyping() {
-      const typingDiv = document.createElement('div');
-      typingDiv.className = 'message bot-message';
-      typingDiv.id = 'typing-indicator';
-      
-      const typingContent = document.createElement('div');
-      typingContent.className = 'typing';
-      typingContent.innerHTML = '<span></span><span></span><span></span>';
-      
-      typingDiv.appendChild(typingContent);
-      chat.appendChild(typingDiv);
-      chat.scrollTop = chat.scrollHeight;
-      
-      return 'typing-indicator';
-    }
-
-    function removeTyping(id) {
-      const element = document.getElementById(id);
-      if (element) element.remove();
-    }
-
-    // Event listeners
-    sendBtn.addEventListener('click', sendMessage);
-    userInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') sendMessage();
-    });
-
-    // Foca no input ao carregar
-    userInput.focus();
-  </script>
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const sections = document.querySelectorAll('.question-section');
+        
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            
+            sections.forEach(section => {
+                const text = section.textContent.toLowerCase();
+                if (searchTerm === '' || text.includes(searchTerm)) {
+                    section.classList.remove('hidden');
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+        });
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
+
