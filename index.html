@@ -217,7 +217,6 @@
             <button class="quick-btn" onclick="askQuestion('Como preencher a data?')">📅 Data</button>
             <button class="quick-btn" onclick="askQuestion('Como preencher o horário?')">🕐 Horários</button>
             <button class="quick-btn" onclick="askQuestion('Quantos alunos posso levar?')">👥 Alunos</button>
-            <button class="quick-btn" onclick="askQuestion('Quais documentos preciso?')">📄 Documentos</button>
             <button class="quick-btn" onclick="askQuestion('Qual o prazo?')">⏰ Prazos</button>
           </div>
         </div>
@@ -250,22 +249,21 @@
         • E.E. Professor João Silva<br><br>
         ⚠️ Use o nome oficial que consta no documento da escola.`
       },
-      <strong>📍 DESTINOS MÚLTIPLOS</strong><br><br>
-
+      'destino': {
+        keywords: ['destino', 'local', 'lugar', 'onde', 'aonde'],
+        resposta: `<strong>📍 DESTINOS MÚLTIPLOS</strong><br><br>
         O formulário se adapta automaticamente à quantidade de destinos:<br><br>
-
         <strong>1. Informe a quantidade de destinos</strong><br>
-        - O formulário perguntará quantos destinos sua saída terá<br>        
-        - Escolha: 1, 2 ou 3 destinos<br><br>
-
+        • O formulário perguntará quantos destinos sua saída terá<br>        
+        • Escolha: 1, 2 ou 3 destinos<br><br>
         <strong>2. O formulário mostra apenas o necessário</strong><br>
-        - Se informar 1 destino: verá apenas o campo para informar o endereço de "Destino 1"<br>
-        - Se informar 2 destinos: verá os campos para informar os endereços de "Destino 1" e "Destino 2"<br>
-        - Se informar 3 destinos: verá os campos para informar os endereços de todos os três destinos<br><br>
-
+        • Se informar 1 destino: verá apenas o campo para informar o endereço de "Destino 1"<br>
+        • Se informar 2 destinos: verá os campos para informar os endereços de "Destino 1" e "Destino 2"<br>
+        • Se informar 3 destinos: verá os campos para informar os endereços de todos os três destinos<br><br>
         <strong>⚠️ Escolheu a quantidade errada?</strong><br>
         Sem problema! Se aparecerem campos extras (Destino 2 ou 3), simplesmente deixe-os em branco. Isso não invalidará seu formulário.<br><br>
-          },
+        💡 <strong>Dica:</strong> Preste atenção à pergunta sobre quantidade de destinos para ver apenas os campos que você precisa preencher.`
+      },
       'data': {
         keywords: ['data', 'dia', 'quando'],
         resposta: `<strong>📅 DATA DA SAÍDA</strong><br><br>
@@ -273,7 +271,7 @@
         <strong>Exemplos corretos:</strong><br>
         • 15/03/2024<br>
         • 08/05/2024<br><br>
-        ⚠️ <strong>IMPORTANTE:</strong> Solicite com no mínimo <strong>7 dias de antecedência</strong>!`
+        ⚠️ <strong>IMPORTANTE:</strong> Solicite com no mínimo <strong>15 dias de antecedência</strong>!`
       },
       'horario': {
         keywords: ['horário', 'horario', 'hora', 'saída', 'saida', 'retorno', 'volta'],
@@ -291,28 +289,24 @@
         <strong>ALUNOS:</strong> Informe o número total de estudantes<br>
         <strong>ACOMPANHANTES:</strong> Professores e funcionários que irão junto<br><br>
         <strong>Regras:</strong><br>
-        • Máximo de pessoas no ônibus é 46.<br>
+        • Máximo de pessoas no ônibus é 46<br>
         • Conte TODOS que irão no transporte<br><br>
-        📝 Exemplo: 30 alunos + 3 acompanhantes, informe 33.`
+        📝 Exemplo: 30 alunos + 3 acompanhantes = informe 33`
       },
-       'prazo': {
+      'prazo': {
         keywords: ['prazo', 'antecedência', 'antecedencia', 'quanto tempo', 'dias'],
         resposta: `<strong>⏰ PRAZOS</strong><br><br>
-        <strong>MÍNIMO:</strong> 15 corridos de antecedência<br>
-        <strong>Recomenda-se acompanhar a tramitação do pedido pelo processo SEI.
+        <strong>MÍNIMO:</strong> 15 dias corridos de antecedência<br><br>
+        💡 Recomenda-se acompanhar a tramitação do pedido pelo processo SEI.<br><br>
         <strong>Exemplo:</strong><br>
-        • Saída em 20/03: Solicitar até 13/03<br><br>
+        • Saída em 20/03: Solicitar até 05/03<br><br>
         ⚠️ Solicitações <strong>fora do prazo podem ser recusadas</strong>!`
       },
-       'limite': {
+      'limite': {
         keywords: ['limite', 'máximo', 'maximo', 'quantas', 'vezes', 'frequência', 'frequencia'],
         resposta: `<strong>📊 LIMITES DE SOLICITAÇÃO</strong><br><br>
-        <strong>Por escola:</strong><br>
-        • Máximo 1 ônibus por semana<br>
-        • Máximo 4 saídas por mês<br><br>
         <strong>Por ônibus:</strong><br>
-        • Até 45 alunos<br>
-        • Mínimo 20 alunos para solicitar<br><br>
+        • Até 46 pessoas (alunos + acompanhantes)<br><br>
         💡 Planeje com antecedência para garantir o transporte!`
       },
       'nao_sei': {
@@ -321,11 +315,8 @@
         Você pode:<br><br>
         1️⃣ Clicar nos botões acima para tópicos específicos<br>
         2️⃣ Perguntar sobre um campo específico<br>
-        3️⃣ Entrar em contato com:<br>
-        • Coordenação da escola<br>
-        • Secretaria de Educação<br>
-        • Telefone: (XX) XXXX-XXXX<br><br>
-        💬 Tente perguntas como: "Como preencher a data?" ou "Quais documentos preciso?"`
+        3️⃣ Entrar em contato com a Secretaria de Educação<br><br>
+        💬 Tente perguntas como: "Como preencher a data?" ou "Qual o prazo?"`
       }
     };
 
@@ -343,7 +334,6 @@
       return `<strong>Desculpe, não entendi sua pergunta.</strong> 😕<br><br>
       Tente perguntar sobre:<br><br>
       • Como preencher algum campo específico<br>
-      • Documentos necessários<br>
       • Prazos<br>
       • Horários<br>
       • Número de alunos<br><br>
