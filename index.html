@@ -94,6 +94,29 @@
       border-bottom-right-radius: 5px;
     }
     
+    .quick-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    
+    .quick-btn {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 15px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .quick-btn:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+    }
+    
     .typing {
       display: flex;
       align-items: center;
@@ -173,15 +196,6 @@
       cursor: not-allowed;
       transform: none;
     }
-
-    .error-message {
-      background: #fee;
-      border: 1px solid #fcc;
-      color: #c33;
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 15px;
-    }
   </style>
 </head>
 <body>
@@ -196,11 +210,16 @@
         <div class="message-content">
           <strong>Olá! 👋</strong><br><br>
           Estou aqui para ajudar você a preencher o formulário de solicitação de transporte para saídas pedagógicas.<br><br>
-          <strong>Posso ajudar com:</strong><br>
-          • Como preencher cada campo<br>
-          • Prazos e documentos necessários<br>
-          • Regras e procedimentos<br><br>
-          Como posso ajudar?
+          <strong>Escolha uma opção ou digite sua dúvida:</strong>
+          <div class="quick-buttons">
+            <button class="quick-btn" onclick="askQuestion('Como preencher o nome?')">📝 Nome da escola</button>
+            <button class="quick-btn" onclick="askQuestion('Como preencher o destino?')">📍 Destino</button>
+            <button class="quick-btn" onclick="askQuestion('Como preencher a data?')">📅 Data</button>
+            <button class="quick-btn" onclick="askQuestion('Como preencher o horário?')">🕐 Horários</button>
+            <button class="quick-btn" onclick="askQuestion('Quantos alunos posso levar?')">👥 Alunos</button>
+            <button class="quick-btn" onclick="askQuestion('Quais documentos preciso?')">📄 Documentos</button>
+            <button class="quick-btn" onclick="askQuestion('Qual o prazo?')">⏰ Prazos</button>
+          </div>
         </div>
       </div>
     </div>
@@ -217,42 +236,167 @@
   </div>
 
   <script>
-    const API_KEY = "AIzaSyCCaACclkmRcNGfe3RmmCHdb_UxWF8Nrtw";
-    const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
-
     const chat = document.getElementById('chat');
     const userInput = document.getElementById('userInput');
     const sendBtn = document.getElementById('sendBtn');
 
-    const systemPrompt = `Você é um assistente de suporte para preenchimento de formulário de transporte escolar para saídas pedagógicas.
+    // Base de conhecimento com respostas
+    const respostas = {
+      'nome': {
+        keywords: ['nome', 'escola', 'unidade', 'instituição'],
+        resposta: `<strong>📝 NOME DA ESCOLA</strong><br><br>
+        Você deve preencher o <strong>nome completo</strong> da unidade escolar.<br><br>
+        <strong>Exemplo correto:</strong><br>
+        • E.E. Professor João Silva<br>
+        • EMEF Maria Santos<br>
+        • Colégio Estadual Dom Pedro II<br><br>
+        ⚠️ Use o nome oficial que consta no documento da escola.`
+      },
+      'destino': {
+        keywords: ['destino', 'local', 'lugar', 'onde', 'aonde'],
+        resposta: `<strong>📍 DESTINO</strong><br><br>
+        Informe o <strong>local exato</strong> da saída pedagógica.<br><br>
+        <strong>Exemplos:</strong><br>
+        • Museu Histórico Municipal<br>
+        • Parque Ecológico da Cidade<br>
+        • Teatro Municipal<br>
+        • Biblioteca Pública Central<br><br>
+        📝 Inclua o endereço completo se possível.`
+      },
+      'data': {
+        keywords: ['data', 'dia', 'quando'],
+        resposta: `<strong>📅 DATA DA SAÍDA</strong><br><br>
+        Use o formato: <strong>DD/MM/AAAA</strong><br><br>
+        <strong>Exemplos corretos:</strong><br>
+        • 15/03/2024<br>
+        • 08/05/2024<br><br>
+        ⚠️ <strong>IMPORTANTE:</strong> Solicite com no mínimo <strong>7 dias de antecedência</strong>!`
+      },
+      'horario': {
+        keywords: ['horário', 'horario', 'hora', 'saída', 'saida', 'retorno', 'volta'],
+        resposta: `<strong>🕐 HORÁRIOS</strong><br><br>
+        Use o formato de <strong>24 horas</strong>:<br><br>
+        <strong>HORÁRIO DE SAÍDA:</strong><br>
+        • 08:00, 09:30, 13:00, etc.<br><br>
+        <strong>HORÁRIO DE RETORNO:</strong><br>
+        • 11:30, 16:00, 17:30, etc.<br><br>
+        💡 Calcule o tempo de deslocamento + atividade!`
+      },
+      'alunos': {
+        keywords: ['alunos', 'aluno', 'estudantes', 'crianças', 'criancas', 'quantidade', 'numero', 'número'],
+        resposta: `<strong>👥 NÚMERO DE ALUNOS E ACOMPANHANTES</strong><br><br>
+        <strong>ALUNOS:</strong> Informe o número total de estudantes<br>
+        <strong>ACOMPANHANTES:</strong> Professores e funcionários que irão junto<br><br>
+        <strong>Regras:</strong><br>
+        • Mínimo de 1 adulto para cada 15 alunos<br>
+        • Máximo de 45 alunos por ônibus<br>
+        • Conte TODOS que irão no transporte<br><br>
+        📝 Exemplo: 30 alunos + 3 acompanhantes`
+      },
+      'documentos': {
+        keywords: ['documento', 'documentos', 'autorização', 'autorizacao', 'papel', 'papeis', 'anexar'],
+        resposta: `<strong>📄 DOCUMENTOS NECESSÁRIOS</strong><br><br>
+        Você precisa anexar:<br><br>
+        ✅ <strong>Autorização dos pais/responsáveis</strong> (obrigatório)<br>
+        ✅ <strong>Lista de alunos participantes</strong><br>
+        ✅ <strong>Plano da atividade pedagógica</strong><br>
+        ✅ <strong>Identificação de alunos com necessidades especiais</strong> (se houver)<br><br>
+        💡 Recolha todas as autorizações <strong>antes</strong> de fazer a solicitação!`
+      },
+      'prazo': {
+        keywords: ['prazo', 'antecedência', 'antecedencia', 'quanto tempo', 'dias'],
+        resposta: `<strong>⏰ PRAZOS</strong><br><br>
+        <strong>MÍNIMO:</strong> 7 dias corridos de antecedência<br>
+        <strong>RECOMENDADO:</strong> 15 dias para maior garantia<br><br>
+        <strong>Exemplo:</strong><br>
+        • Saída em 20/03: Solicitar até 13/03<br><br>
+        ⚠️ Solicitações <strong>fora do prazo podem ser recusadas</strong>!`
+      },
+      'motivo': {
+        keywords: ['motivo', 'objetivo', 'por que', 'porque', 'finalidade', 'razão', 'razao'],
+        resposta: `<strong>🎯 MOTIVO/OBJETIVO PEDAGÓGICO</strong><br><br>
+        Descreva <strong>claramente</strong> o objetivo educacional da saída.<br><br>
+        <strong>Bons exemplos:</strong><br>
+        • "Visita ao museu para estudo sobre história local (disciplina de História)"<br>
+        • "Observação da fauna e flora no parque (Ciências Naturais)"<br>
+        • "Assistir peça teatral sobre folclore brasileiro (Literatura)"<br><br>
+        📝 Relacione com o conteúdo curricular!`
+      },
+      'observacoes': {
+        keywords: ['observação', 'observacao', 'observações', 'observacoes', 'adicional', 'extra'],
+        resposta: `<strong>📌 OBSERVAÇÕES</strong><br><br>
+        Use este campo para informações importantes como:<br><br>
+        • Necessidades especiais de alunos<br>
+        • Acessibilidade necessária<br>
+        • Alimentação especial<br>
+        • Medicamentos de emergência<br>
+        • Contato de emergência<br><br>
+        💡 Seja específico para garantir a segurança de todos!`
+      },
+      'municipio': {
+        keywords: ['município', 'municipio', 'cidade', 'fora', 'outro'],
+        resposta: `<strong>🗺️ DESTINOS FORA DO MUNICÍPIO</strong><br><br>
+        ⚠️ <strong>Atenção:</strong> Saídas para outras cidades precisam:<br><br>
+        • Autorização especial da Secretaria<br>
+        • Justificativa pedagógica detalhada<br>
+        • Prazo maior (mínimo 15 dias)<br>
+        • Seguro adicional<br><br>
+        📞 Entre em contato com a coordenação primeiro!`
+      },
+      'limite': {
+        keywords: ['limite', 'máximo', 'maximo', 'quantas', 'vezes', 'frequência', 'frequencia'],
+        resposta: `<strong>📊 LIMITES DE SOLICITAÇÃO</strong><br><br>
+        <strong>Por escola:</strong><br>
+        • Máximo 1 ônibus por semana<br>
+        • Máximo 4 saídas por mês<br><br>
+        <strong>Por ônibus:</strong><br>
+        • Até 45 alunos<br>
+        • Mínimo 20 alunos para solicitar<br><br>
+        💡 Planeje com antecedência para garantir o transporte!`
+      },
+      'nao_sei': {
+        keywords: ['não sei', 'nao sei', 'dúvida', 'duvida', 'ajuda', 'help', 'socorro'],
+        resposta: `<strong>🤔 Precisa de mais ajuda?</strong><br><br>
+        Você pode:<br><br>
+        1️⃣ Clicar nos botões acima para tópicos específicos<br>
+        2️⃣ Perguntar sobre um campo específico<br>
+        3️⃣ Entrar em contato com:<br>
+        • Coordenação da escola<br>
+        • Secretaria de Educação<br>
+        • Telefone: (XX) XXXX-XXXX<br><br>
+        💬 Tente perguntas como: "Como preencher a data?" ou "Quais documentos preciso?"`
+      }
+    };
 
-CAMPOS DO FORMULÁRIO:
-- NOME DA ESCOLA: Nome completo da unidade escolar
-- DESTINO: Local da saída pedagógica (museu, parque, teatro, etc)
-- DATA DA SAÍDA: Formato dd/mm/aaaa
-- HORÁRIO DE SAÍDA: Formato 24h (ex: 14:00)
-- HORÁRIO DE RETORNO: Formato 24h (ex: 17:00)
-- NÚMERO DE ALUNOS: Quantidade total de estudantes
-- NÚMERO DE ACOMPANHANTES: Professores e funcionários
-- MOTIVO/OBJETIVO PEDAGÓGICO: Descrever o objetivo educacional da saída
-- OBSERVAÇÕES: Informações adicionais relevantes
+    function encontrarResposta(pergunta) {
+      const perguntaLower = pergunta.toLowerCase();
+      
+      // Procura por palavras-chave
+      for (const [key, data] of Object.entries(respostas)) {
+        if (data.keywords.some(keyword => perguntaLower.includes(keyword))) {
+          return data.resposta;
+        }
+      }
+      
+      // Resposta padrão
+      return `<strong>Desculpe, não entendi sua pergunta.</strong> 😕<br><br>
+      Tente perguntar sobre:<br><br>
+      • Como preencher algum campo específico<br>
+      • Documentos necessários<br>
+      • Prazos<br>
+      • Horários<br>
+      • Número de alunos<br><br>
+      Ou clique em um dos botões acima! 👆`;
+    }
 
-REGRAS IMPORTANTES:
-- Solicitar com no mínimo 7 dias de antecedência
-- Anexar autorização assinada pelos responsáveis
-- Informar se há alunos com necessidades especiais
-- Confirmar se o destino está dentro do município
-- Máximo de 1 ônibus por escola por semana
+    function askQuestion(question) {
+      userInput.value = question;
+      sendMessage();
+    }
 
-Seja educado, claro e objetivo. Use exemplos práticos quando possível.`;
-
-    async function sendMessage() {
+    function sendMessage() {
       const message = userInput.value.trim();
       if (!message) return;
-
-      // Desabilita input
-      userInput.disabled = true;
-      sendBtn.disabled = true;
 
       // Adiciona mensagem do usuário
       addMessage(message, 'user');
@@ -261,41 +405,12 @@ Seja educado, claro e objetivo. Use exemplos práticos quando possível.`;
       // Mostra indicador de digitação
       const typingId = showTyping();
 
-      try {
-        const response = await fetch(`${API_URL}?key=${API_KEY}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{
-              parts: [{
-                text: `${systemPrompt}\n\nPergunta do usuário: ${message}`
-              }]
-            }]
-          })
-        });
-
-        const data = await response.json();
-        
-        // Remove indicador de digitação
+      // Simula "pensamento" do bot
+      setTimeout(() => {
         removeTyping(typingId);
-
-        if (data.error) {
-          addMessage(`❌ Erro: ${data.error.message}`, 'bot');
-        } else if (data.candidates && data.candidates[0]) {
-          const reply = data.candidates[0].content.parts[0].text;
-          addMessage(reply, 'bot');
-        } else {
-          addMessage('❌ Desculpe, não consegui processar sua pergunta. Tente reformular.', 'bot');
-        }
-      } catch (error) {
-        removeTyping(typingId);
-        addMessage(`❌ Erro de conexão: ${error.message}`, 'bot');
-      } finally {
-        // Reabilita input
-        userInput.disabled = false;
-        sendBtn.disabled = false;
-        userInput.focus();
-      }
+        const resposta = encontrarResposta(message);
+        addMessage(resposta, 'bot');
+      }, 800);
     }
 
     function addMessage(text, sender) {
@@ -304,7 +419,7 @@ Seja educado, claro e objetivo. Use exemplos práticos quando possível.`;
       
       const contentDiv = document.createElement('div');
       contentDiv.className = 'message-content';
-      contentDiv.innerHTML = text.replace(/\n/g, '<br>');
+      contentDiv.innerHTML = text;
       
       messageDiv.appendChild(contentDiv);
       chat.appendChild(messageDiv);
