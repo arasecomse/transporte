@@ -246,7 +246,7 @@
         resposta: `<strong>📝 NOME DA ESCOLA</strong><br><br>
         Você deve preencher o <strong>nome completo</strong> da unidade escolar.<br><br>
         <strong>Exemplo correto:</strong><br>
-        • E.E. Professor João Silva<br><br>
+        • E.E. Antonio Joaquim de Carvalho<br><br>
         ⚠️ Use o nome oficial que consta no documento da escola.`
       },
       'destino': {
@@ -256,9 +256,9 @@
         <strong>1. Informe a quantidade de destinos</strong><br>
         • O formulário perguntará quantos destinos sua saída terá<br>        
         • Escolha: 1, 2 ou 3 destinos<br><br>
-        <strong>2. O formulário mostra apenas o necessário</strong><br>
+        <strong>2. O formulário mostrará apenas os campos que estiverem de acordo com as suas escolhas</strong><br>
         • Se informar 1 destino: verá apenas o campo para informar o endereço de "Destino 1"<br>
-        • Se informar 2 ou 3 destinos: verá os campos para informar os endereços da quantidade de destinos informados<br><br>
+        • Se informar 2 ou 3 destinos: verá os campos para informar os endereços de 2 ou 3  destinos, conforme selecionado<br><br>
         <strong>⚠️ Escolheu a quantidade errada?</strong><br>
         Sem problema! Quando os campos desnecessários aparecerem, deixe-os em branco. Isso não invalidará seu formulário.<br><br>
         💡 <strong>Dica:</strong> Quando você receber, por e+mail, o documento pronto, será possível fazer as edições que você julgar necessárias.`
@@ -280,15 +280,12 @@
         • 08:00, 09:30, 13:00, etc.<br><br>
         <strong>HORÁRIO DE RETORNO:</strong><br>
         • 11:30, 16:00, 17:30, etc.<br><br>
-        💡 Calcule o tempo de deslocamento + atividade!`
-      },
+        💡 Todos os campos relativos a horários são de preenchimento obrigatório, pois a empresa prestadora do serviço de transporte necessita desses dados.},
       'alunos': {
         keywords: ['alunos', 'aluno', 'estudantes', 'crianças', 'criancas', 'quantidade', 'numero', 'número'],
         resposta: `<strong>👥 NÚMERO DE ALUNOS E ACOMPANHANTES</strong><br><br>
-        <strong>ALUNOS:</strong> Informe o número total de estudantes<br>
-        <strong>ACOMPANHANTES:</strong> Professores e funcionários que irão junto<br><br>
-        <strong>Regras:</strong><br>
-        • Máximo de pessoas no ônibus é 46<br>
+        <strong>ALUNOS:</strong> Informe o número total de pessoas que embarcarão no meio de transporte fornecido (alunos + professores e funcionários).<<br><br>
+        <strong>Regras:
         • Conte TODOS que irão no transporte<br><br>
         📝 Exemplo: 30 alunos + 3 acompanhantes = informe 33`
       },
@@ -296,25 +293,19 @@
         keywords: ['prazo', 'antecedência', 'antecedencia', 'quanto tempo', 'dias'],
         resposta: `<strong>⏰ PRAZOS</strong><br><br>
         <strong>MÍNIMO:</strong> 15 dias corridos de antecedência<br><br>
-        💡 Recomenda-se acompanhar a tramitação do pedido pelo processo SEI.<br><br>
+        💡 Recomenda-se acompanhar a tramitação do pedido pelo processo SEI para saber se o processo já foi aprovado e em que seção ele está tramitando.<br><br>
         <strong>Exemplo:</strong><br>
         • Saída em 20/03: Solicitar até 05/03<br><br>
         ⚠️ Solicitações <strong>fora do prazo podem ser recusadas</strong>!`
       },
-      'limite': {
-        keywords: ['limite', 'máximo', 'maximo', 'quantas', 'vezes', 'frequência', 'frequencia'],
-        resposta: `<strong>📊 LIMITES DE SOLICITAÇÃO</strong><br><br>
-        <strong>Por ônibus:</strong><br>
-        • Até 46 pessoas (alunos + acompanhantes)<br><br>
-        💡 Planeje com antecedência para garantir o transporte!`
-      },
+      
       'nao_sei': {
         keywords: ['não sei', 'nao sei', 'dúvida', 'duvida', 'ajuda', 'help', 'socorro'],
         resposta: `<strong>🤔 Precisa de mais ajuda?</strong><br><br>
         Você pode:<br><br>
         1️⃣ Clicar nos botões acima para tópicos específicos<br>
         2️⃣ Perguntar sobre um campo específico<br>
-        3️⃣ Entrar em contato com a Secretaria de Educação<br><br>
+        3️⃣ Entrar em contato com a seção onde o pedido esteja tramitando para obter informações<br><br>
         💬 Tente perguntas como: "Como preencher a data?" ou "Qual o prazo?"`
       }
     };
