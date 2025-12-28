@@ -247,22 +247,25 @@
         resposta: `<strong>📝 NOME DA ESCOLA</strong><br><br>
         Você deve preencher o <strong>nome completo</strong> da unidade escolar.<br><br>
         <strong>Exemplo correto:</strong><br>
-        • E.E. Professor João Silva<br>
-        • EMEF Maria Santos<br>
-        • Colégio Estadual Dom Pedro II<br><br>
+        • E.E. Professor João Silva<br><br>
         ⚠️ Use o nome oficial que consta no documento da escola.`
       },
-      'destino': {
-        keywords: ['destino', 'local', 'lugar', 'onde', 'aonde'],
-        resposta: `<strong>📍 DESTINO</strong><br><br>
-        Informe o <strong>local exato</strong> da saída pedagógica.<br><br>
-        <strong>Exemplos:</strong><br>
-        • Museu Histórico Municipal<br>
-        • Parque Ecológico da Cidade<br>
-        • Teatro Municipal<br>
-        • Biblioteca Pública Central<br><br>
-        📝 Inclua o endereço completo se possível.`
-      },
+      <strong>📍 DESTINOS MÚLTIPLOS</strong><br><br>
+
+        O formulário se adapta automaticamente à quantidade de destinos:<br><br>
+
+        <strong>1. Informe a quantidade de destinos</strong><br>
+        - O formulário perguntará quantos destinos sua saída terá<br>        
+        - Escolha: 1, 2 ou 3 destinos<br><br>
+
+        <strong>2. O formulário mostra apenas o necessário</strong><br>
+        - Se informar 1 destino: verá apenas o campo para informar o endereço de "Destino 1"<br>
+        - Se informar 2 destinos: verá os campos para informar os endereços de "Destino 1" e "Destino 2"<br>
+        - Se informar 3 destinos: verá os campos para informar os endereços de todos os três destinos<br><br>
+
+        <strong>⚠️ Escolheu a quantidade errada?</strong><br>
+        Sem problema! Se aparecerem campos extras (Destino 2 ou 3), simplesmente deixe-os em branco. Isso não invalidará seu formulário.<br><br>
+          },
       'data': {
         keywords: ['data', 'dia', 'quando'],
         resposta: `<strong>📅 DATA DA SAÍDA</strong><br><br>
@@ -288,62 +291,20 @@
         <strong>ALUNOS:</strong> Informe o número total de estudantes<br>
         <strong>ACOMPANHANTES:</strong> Professores e funcionários que irão junto<br><br>
         <strong>Regras:</strong><br>
-        • Mínimo de 1 adulto para cada 15 alunos<br>
-        • Máximo de 45 alunos por ônibus<br>
+        • Máximo de pessoas no ônibus é 46.<br>
         • Conte TODOS que irão no transporte<br><br>
-        📝 Exemplo: 30 alunos + 3 acompanhantes`
+        📝 Exemplo: 30 alunos + 3 acompanhantes, informe 33.`
       },
-      'documentos': {
-        keywords: ['documento', 'documentos', 'autorização', 'autorizacao', 'papel', 'papeis', 'anexar'],
-        resposta: `<strong>📄 DOCUMENTOS NECESSÁRIOS</strong><br><br>
-        Você precisa anexar:<br><br>
-        ✅ <strong>Autorização dos pais/responsáveis</strong> (obrigatório)<br>
-        ✅ <strong>Lista de alunos participantes</strong><br>
-        ✅ <strong>Plano da atividade pedagógica</strong><br>
-        ✅ <strong>Identificação de alunos com necessidades especiais</strong> (se houver)<br><br>
-        💡 Recolha todas as autorizações <strong>antes</strong> de fazer a solicitação!`
-      },
-      'prazo': {
+       'prazo': {
         keywords: ['prazo', 'antecedência', 'antecedencia', 'quanto tempo', 'dias'],
         resposta: `<strong>⏰ PRAZOS</strong><br><br>
-        <strong>MÍNIMO:</strong> 7 dias corridos de antecedência<br>
-        <strong>RECOMENDADO:</strong> 15 dias para maior garantia<br><br>
+        <strong>MÍNIMO:</strong> 15 corridos de antecedência<br>
+        <strong>Recomenda-se acompanhar a tramitação do pedido pelo processo SEI.
         <strong>Exemplo:</strong><br>
         • Saída em 20/03: Solicitar até 13/03<br><br>
         ⚠️ Solicitações <strong>fora do prazo podem ser recusadas</strong>!`
       },
-      'motivo': {
-        keywords: ['motivo', 'objetivo', 'por que', 'porque', 'finalidade', 'razão', 'razao'],
-        resposta: `<strong>🎯 MOTIVO/OBJETIVO PEDAGÓGICO</strong><br><br>
-        Descreva <strong>claramente</strong> o objetivo educacional da saída.<br><br>
-        <strong>Bons exemplos:</strong><br>
-        • "Visita ao museu para estudo sobre história local (disciplina de História)"<br>
-        • "Observação da fauna e flora no parque (Ciências Naturais)"<br>
-        • "Assistir peça teatral sobre folclore brasileiro (Literatura)"<br><br>
-        📝 Relacione com o conteúdo curricular!`
-      },
-      'observacoes': {
-        keywords: ['observação', 'observacao', 'observações', 'observacoes', 'adicional', 'extra'],
-        resposta: `<strong>📌 OBSERVAÇÕES</strong><br><br>
-        Use este campo para informações importantes como:<br><br>
-        • Necessidades especiais de alunos<br>
-        • Acessibilidade necessária<br>
-        • Alimentação especial<br>
-        • Medicamentos de emergência<br>
-        • Contato de emergência<br><br>
-        💡 Seja específico para garantir a segurança de todos!`
-      },
-      'municipio': {
-        keywords: ['município', 'municipio', 'cidade', 'fora', 'outro'],
-        resposta: `<strong>🗺️ DESTINOS FORA DO MUNICÍPIO</strong><br><br>
-        ⚠️ <strong>Atenção:</strong> Saídas para outras cidades precisam:<br><br>
-        • Autorização especial da Secretaria<br>
-        • Justificativa pedagógica detalhada<br>
-        • Prazo maior (mínimo 15 dias)<br>
-        • Seguro adicional<br><br>
-        📞 Entre em contato com a coordenação primeiro!`
-      },
-      'limite': {
+       'limite': {
         keywords: ['limite', 'máximo', 'maximo', 'quantas', 'vezes', 'frequência', 'frequencia'],
         resposta: `<strong>📊 LIMITES DE SOLICITAÇÃO</strong><br><br>
         <strong>Por escola:</strong><br>
