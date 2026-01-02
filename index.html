@@ -558,21 +558,7 @@
     </div>
     
     <script>
-        const searchInput = document.getElementById('searchInput');
-        const sections = document.querySelectorAll('.question-section');
-        
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase().trim();
-            
-            sections.forEach(section => {
-                const text = section.textContent.toLowerCase();
-                if (searchTerm === '' || text.includes(searchTerm)) {
-                    section.classList.remove('hidden');
-                } else {
-                    section.classList.add('hidden');
-                }
-            });
-        });
+       
         
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
